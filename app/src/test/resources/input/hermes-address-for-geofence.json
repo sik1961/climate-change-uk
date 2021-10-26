@@ -1,0 +1,13 @@
+{
+  "name" : "Joe Bloggs",
+  "emailAddress" : "here@there.com",
+  "mobile" : "123",
+  "addressLine1":"37 St. Margarets Court",
+  "addressLine2":"Maritime Quarter",
+  "addressLine3":"SWANSEA",
+  "addressLine4":"Leeds",
+  "addressLine5":null,
+  "addressLine6":null,
+  "postcode":"sa11az",
+  "what3words":"other.three.words"
+}

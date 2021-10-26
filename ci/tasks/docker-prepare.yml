@@ -1,0 +1,17 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: 548760365095.dkr.ecr.eu-west-1.amazonaws.com/dgw-pulse-replacement/build
+    tag: latest
+
+inputs:
+- name: code
+
+outputs:
+- name: app
+
+run:
+  path:
+    code/ci/scripts/docker-prepare.sh

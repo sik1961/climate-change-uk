@@ -1,0 +1,21 @@
+{
+  "country": "GB",
+  "square": {
+    "southwest": {
+      "lng": -1.587892,
+      "lat": 53.733802
+    },
+    "northeast": {
+      "lng": -1.587846,
+      "lat": 53.733829
+    }
+  },
+  "nearestPlace": "Morley, Leeds",
+  "coordinates": {
+    "lng": -1.587869,
+    "lat": 53.733816
+  },
+  "words": "paints.itself.soup",
+  "language": "en",
+  "map": "https:\/\/w3w.co\/paints.itself.soup"
+}

@@ -1,0 +1,21 @@
+{
+  "country": "GB",
+  "square": {
+    "southwest": {
+      "lng": -1.489606,
+      "lat": 53.560398
+    },
+    "northeast": {
+      "lng": -1.489561,
+      "lat": 53.560425
+    }
+  },
+  "nearestPlace": "Barnsley",
+  "coordinates": {
+    "lng": -1.489583,
+    "lat": 53.560411
+  },
+  "words": "charm.rice.carry",
+  "language": "en",
+  "map": "https:\/\/w3w.co\/charm.rice.carry"
+}

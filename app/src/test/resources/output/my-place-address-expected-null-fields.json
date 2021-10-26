@@ -1,0 +1,24 @@
+{
+  "address" : {
+    "addressType": "MYPLACE",
+    "gpsCoordinates": {
+      "gpsLatitude": null,
+      "gpsLongitude": null,
+      "gpsDuration": null,
+      "gpsRadioIndicator": null,
+      "gpsValidity": null,
+      "geofenceRadius": null,
+      "geofenceTimeout": null,
+      "what3Words": null
+    }
+  },
+  "addressWaypoints": {
+    "addressWaypoint": [
+      {
+        "addressWaypointType": "SAFEPLACE",
+        "note": "SAFEPLACE:",
+        "gpsCoordinates": null
+      }
+    ]
+  }
+}

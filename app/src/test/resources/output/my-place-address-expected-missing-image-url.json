@@ -1,0 +1,65 @@
+{
+  "address" : {
+    "addressType": "MYPLACE",
+    "postcode": "TW3 1PQ",
+    "addressLine1": "49, DOMINION CLOSE",
+    "addressLine2": "HOUNSLOW",
+    "addressLine3": "LONDON",
+    "addressLine4": "GREATER LONDON",
+    "addressLine5": "LONDON",
+    "addressLine6": "GBP",
+    "gpsCoordinates": {
+      "gpsLatitude": null,
+      "gpsLongitude": null,
+      "gpsDuration": null,
+      "gpsRadioIndicator": null,
+      "gpsValidity": null,
+      "geofenceRadius": null,
+      "geofenceTimeout": null,
+      "what3Words": null
+    }
+  },
+  "addressWaypoints": {
+    "addressWaypoint": [
+      {
+        "addressWaypointType": "SAFEPLACE",
+        "note": "SAFEPLACE:\nshed\nPlease leave in shed",
+        "rank": 201,
+        "gpsCoordinates": {
+          "gpsLatitude": "2.34567",
+          "gpsLongitude": "1.234567"
+        }
+      },
+      {
+        "addressWaypointType": "SAFEPLACE",
+        "note": "SAFEPLACE:\ngarage\nPlease leave in garage if shed locked",
+        "rank": 202,
+        "imageUrl": "URL2",
+        "gpsCoordinates": {
+          "gpsLatitude": "2.34568",
+          "gpsLongitude": "1.234568"
+        }
+      },
+      {
+        "addressWaypointType": "NEIGHBOUR",
+        "note": "NEIGHBOUR:\nNeighbour 1 Name\nNeighbour 1 Address Line 1 Neighbour 1 Address Line 2",
+        "rank": 301
+      },
+      {
+        "addressWaypointType": "NEIGHBOUR",
+        "note": "NEIGHBOUR:\nNeighbour 2 Name\nNeighbour 2 Address Line 1 Neighbour 2 Address Line 2",
+        "rank": 302
+      },
+      {
+        "addressWaypointType": "AVOIDNEIGHBOUR",
+        "note": "AVOID NEIGHBOUR:\nAvoid Neighbour 1 Name\nAvoid Neighbour 1 Address Line 1 Avoid Neighbour 1 Address Line 2",
+        "rank": 401
+      },
+      {
+        "addressWaypointType": "AVOIDNEIGHBOUR",
+        "note": "AVOID NEIGHBOUR:\nAvoid Neighbour 2 Name\nAvoid Neighbour 2 Address Line 1 Avoid Neighbour 2 Address Line 2",
+        "rank": 402
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "email": "here@there.com",
+  "addressType": "home_address",
+  "addressLine1": "37 St. Margarets Court",
+  "addressLine2": "Maritime Quarter",
+  "addressLine3": "SWANSEA",
+  "addressLine4": null,
+  "addressLine5": null,
+  "addressLine6": null,
+  "postcode": "sa11az",
+  "gpsLatitude": null,
+  "gpsLongitude": null,
+  "what3Words": null,
+  "safePlaces": [
+    {
+      "locationType": "safeplace",
+      "safePlaceType": "Porch",
+      "gpsLatitude": null,
+      "gpsLongitude": null,
+      "note": "",
+      "rank": 200,
+      "imageGUID": null
+    }
+  ],
+  "addressWaypoints": null,
+  "avoidNeighbours": null,
+  "Neighbours": null
+}

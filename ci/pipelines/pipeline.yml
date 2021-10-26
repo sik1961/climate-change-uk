@@ -1,0 +1,117 @@
+resource_types:
+
+- name: pr-teams-notification
+  type: docker-image
+  source:
+    repository: 548760365095.dkr.ecr.eu-west-1.amazonaws.com/dgw-pulse-replacement/teams-notification-pr
+    tag: latest
+
+- name: maven-resource
+  type: docker-image
+  source:
+    repository: patrickcrocker/maven-resource
+    tag: latest
+
+resources:
+
+- name: ga-repo
+  type: git
+  source:
+    branch: master
+    private_key: {{bitbucket-private-key}}
+    uri: git@git.hermescloud.co.uk:pulse-replacement/climate-change-uk.git
+
+- name: ga-image
+  type: docker-image
+  source:
+    repository: 548760365095.dkr.ecr.eu-west-1.amazonaws.com/dgw-pulse-replacement/climate-change-uk
+
+- name: teams
+  type: pr-teams-notification
+  source:
+    url: https://outlook.office.com/webhook/3f7e329a-c59b-418c-bb41-eaca92ccb47f@9c132d09-4765-4d2b-a356-e76985eecf78/IncomingWebhook/6340c76c802349be8bf0656e99c375f8/1e858640-1a12-425b-9a0b-645653dab035
+
+jobs:
+
+- name: start-build
+  public: true
+  plan:
+  - get: ga-repo
+    trigger: true
+  - task: write-teams-message
+    file: ga-repo/ci/tasks/start-build.yml
+    input_mapping:
+      code: ga-repo
+  - put: teams
+    params:
+      title: Geofencing Adapter
+      text: |
+        >>> $TEXT_FILE_CONTENT
+      text_file: messages/start-build
+
+- name: build
+  plan:
+  - do:
+    - get: ga-repo
+      trigger: true
+      passed:
+        - start-build
+    - task: build
+      privileged: true
+      file: ga-repo/ci/tasks/build.yml
+      input_mapping:
+        code: ga-repo
+    on_failure:
+      put: teams
+      params:
+        title: Geofencing Adapter
+        colour: FF0000
+        text: Failed building
+        actionName: View
+        actionTarget: https://mattsnewconcourse.hermescloud.co.uk/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
+
+- name: push-to-ecs
+  plan:
+  - do:
+    - get: ga-repo
+      trigger: true
+      passed:
+      - build
+    - task: package
+      file: ga-repo/ci/tasks/docker-prepare.yml
+      input_mapping:
+        code: ga-repo
+    - put: ga-image
+      params:
+        build: app
+        tag: app/version.txt
+        tag_as_latest: true
+      get_params:
+        skip_download: true
+    on_failure:
+      put: teams
+      params:
+        title: Geofencing Adapter
+        colour: FF0000
+        text: Failed pusing to ecs
+        actionName: View
+        actionTarget: https://mattsnewconcourse.hermescloud.co.uk/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
+
+- name: deploy-to-test
+  plan:
+  - get: ga-repo
+    trigger: true
+    passed:
+      - push-to-ecs
+  - task: run-cluster-task
+    file: ga-repo/ci/tasks/deploy-to-test.yml
+    input_mapping:
+      code: ga-repo
+    on_failure:
+      put: teams
+      params:
+        title: Geofencing Adapter
+        colour: FF0000
+        text: Failed deploying to test
+        actionName: View
+        actionTarget: https://mattsnewconcourse.hermescloud.co.uk/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME

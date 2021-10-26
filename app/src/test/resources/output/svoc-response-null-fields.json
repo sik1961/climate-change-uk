@@ -1,0 +1,14 @@
+{
+  "goldenAddress": [
+    {
+      "safePlaces": [
+        {
+          "gpsLatitude": null,
+          "gpsLongitude": null
+        }
+      ],
+      "Neighbours": null,
+      "avoidNeighbours": [ null ]
+    }
+  ]
+}

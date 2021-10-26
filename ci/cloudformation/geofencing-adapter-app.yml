@@ -1,0 +1,189 @@
+Parameters:
+
+  ParAppsStackName:
+    Type: "String"
+    Default: pr-nonprod-dev-apps
+
+  ParGAImageTag:
+    Type: "String"
+    Default: "latest"
+
+  ParDebug:
+    Type: "String"
+    Default: "false"
+
+  ParDesiredCount:
+    Type: Number
+    Default: 1
+
+  ParMemoryReservation:
+    Type: "String"
+    Default: 1024
+
+  ParMemoryLimit:
+    Type: "String"
+    Default: 980
+
+  ParQasServiceHost:
+    Type: "String"
+    Default: win-v0bpsvt8lve
+
+  ParHostIpAddress:
+    Type: "String"
+    Default: 10.129.97.245
+
+  ParQasServiceUrl:
+    Type: "String"
+    Default: http://win-v0bpsvt8lve/qasaddresscleanse.5.3.16/QASAddressCleanseService.svc?singleWsdl
+
+  ParEnrichedAddressControllerSvocEnabled:
+    Type: "String"
+    AllowedValues:
+      - "true"
+      - "false"
+    Default: "true"
+
+  ParSimpleSvocControllerSimpleSvocEnabled:
+    Type: "String"
+    AllowedValues:
+      - "true"
+      - "false"
+    Default: "true"
+
+  ParSvocServiceUrl:
+    Type: "String"
+
+  ParSimpleSvocServiceUrl:
+    Type: "String"
+
+  ParWhat3wordsServiceUrl:
+    Type: "String"
+    Default: https://what3words-api.sit.hermescloud.co.uk/v3/convert-to-coordinates
+
+  ParMediaServiceRoot:
+    Type: "String"
+
+  ParMediaPath:
+    Type: "String"
+    Default: "my-places-photo"
+
+  ParLatLongFallbackService:
+    Type: "String"
+    AllowedValues:
+      - "PostTag"
+      - "QAS"
+    Default: "QAS"
+
+  ParGeofenceActionOnDeliveryFlag:
+    Type: "String"
+    AllowedValues:
+      - "true"
+      - "false"
+    Default: "true"
+
+  ParEnvironment:
+    Type: String
+    Default: DEV
+    AllowedValues:
+      - DEV
+      - UAT
+      - SIT
+      - PREPROD
+      - PROD
+
+  ParLogLevel:
+    Type: String
+    Default: INFO
+
+Resources:
+  serviceClimateChangeUk:
+    Type: "AWS::ECS::Service"
+    Properties:
+      Cluster:
+        Fn::ImportValue:
+          !Sub "${ParAppsStackName}-climate-change-uk-cluster"
+      DesiredCount: !Ref ParDesiredCount
+      DeploymentConfiguration:
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
+      TaskDefinition: !Ref taskClimateChangeUk
+      LoadBalancers:
+        - TargetGroupArn:
+            Fn::ImportValue:
+              !Sub "${ParAppsStackName}-ga-alb-targetgroup"
+          ContainerPort: 8080
+          ContainerName: climate-change-uk
+
+  taskClimateChangeUk:
+    Type: "AWS::ECS::TaskDefinition"
+    Properties:
+      Family: !Join ['-', [!Ref 'AWS::StackName', task]]
+      ExecutionRoleArn:
+        Fn::ImportValue:
+          !Sub "${ParAppsStackName}::ECSExecutionIamRole"
+      NetworkMode: bridge
+      ContainerDefinitions:
+        - Name: climate-change-uk
+          Essential: 'true'
+          Image: !Sub 548760365095.dkr.ecr.eu-west-1.amazonaws.com/dgw-pulse-replacement/climate-change-uk:${ParGAImageTag}
+          MemoryReservation: !Ref ParMemoryReservation
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group:
+                "Fn::ImportValue":
+                  !Sub "${ParAppsStackName}-LogGroupName"
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecsServiceGa
+          PortMappings:
+            - HostPort: 8080
+              ContainerPort: 8080
+              Protocol: "tcp"
+            - HostPort: 8181
+              ContainerPort: 8181
+              Protocol: "tcp"
+          ExtraHosts:
+            - Hostname: !Ref ParQasServiceHost
+              IpAddress: !Ref ParHostIpAddress
+          Environment:
+            - Name: JAVA_TOOL_OPTIONS
+              Value: !Join ['', ['-XX:+ExitOnOutOfMemoryError -Xmx', !Sub "${ParMemoryLimit}m"]]
+            - Name: DEBUG
+              Value: !Ref ParDebug
+            - Name: QAS_SERVICE_URL
+              Value: !Ref ParQasServiceUrl
+            - Name: MYPLACES_ADAPTER_ENRICHED_ADDRESS_CONTROLLER_SVOC_ENABLED
+              Value: !Ref ParEnrichedAddressControllerSvocEnabled
+            - Name: MYPLACES_ADAPTER_SIMPLE_SVOC_CONTROLLER_SIMPLESVOC_ENABLED
+              Value: !Ref ParSimpleSvocControllerSimpleSvocEnabled
+            - Name: GEOFENCING_ADAPTER_GEOFENCE_ACTION_ON_DELIVERY_FLAG
+            Value: !Ref ParGeofenceActionOnDeliveryFlag
+            - Name: SVOC_SERVICE_URL
+              Value: !Ref ParSvocServiceUrl
+            - Name: SIMPLESVOC_SERVICE_URL
+              Value: !Ref ParSimpleSvocServiceUrl
+            - Name: WHAT3WORDS_SERVICE_URL
+              Value: !Ref ParWhat3wordsServiceUrl
+            - Name: MEDIA_SERVICE_ROOT
+              Value: !Ref ParMediaServiceRoot
+            - Name: MEDIA_PATH
+              Value: !Ref ParMediaPath
+            - Name: LATLONG_FALLBACK_SERVICE
+              Value: !Ref ParLatLongFallbackService
+            - Name: LOG_LEVEL
+              Value: !Ref ParLogLevel
+          Secrets:
+            - Name: POSTTAG_LATLONG_URL
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ParEnvironment}/ParcelDomain/ClimateChangeUk/postTagLatLongUrl"
+            - Name: POSTTAG_OVERRIDES_URL
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ParEnvironment}/ParcelDomain/ClimateChangeUk/postTagOverridesUrl"
+            - Name: POSTTAG_OVERRIDES_ALLOWED
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ParEnvironment}/ParcelDomain/ClimateChangeUk/postTagOverridesAllowed"
+            - Name: MYPLACES_LLS_GEOFENCE
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ParEnvironment}/ParcelDomain/ClimateChangeUk/myPlacesLLSGeofence"
+            - Name: W3W_LLS_GEOFENCE
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ParEnvironment}/ParcelDomain/ClimateChangeUk/w3wLLSGeofence"
+            - Name: CASSANDRA_CONTACT_POINTS
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ParEnvironment}/ParcelDomain/cassandraInstaclustrContactPoints"
+            - Name: CASSANDRA_DATACENTER
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${ParEnvironment}/ParcelDomain/cassandraDatacenter"

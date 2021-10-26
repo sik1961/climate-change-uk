@@ -1,0 +1,24 @@
+{
+  "data": {
+    "Area": "Bamber Bridge",
+    "Building": "",
+    "CommDom": "D",
+    "County": "Lancashire",
+    "DepStreet": "",
+    "Latitude": "53.7325686",
+    "Longitude": "-2.6528726",
+    "MultiOcc": "0",
+    "HouseholdDensity":"1",
+    "Notes": "",
+    "Number": "118",
+    "Organisation": "",
+    "PostCode": "PR5 6ZH",
+    "PostTown": "Preston",
+    "SBN": "",
+    "Street": "Brindle Road",
+    "Town": "Preston"
+  },
+  "msg": "Success",
+  "status": "OK",
+  "statusCode": "200"
+}

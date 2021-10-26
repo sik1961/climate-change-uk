@@ -1,0 +1,23 @@
+{
+  "msg": "No Results",
+  "status": "Not Found",
+  "statusCode": "404",
+  "data": {
+    "Organisation": "",
+    "SBN": "",
+    "Building": "",
+    "Number": "",
+    "DepStreet": "",
+    "Street": "",
+    "Latitude": "",
+    "Longitude": "",
+    "MultiOcc": "",
+    "CommDom": "",
+    "PostTown": "",
+    "Town": "",
+    "County": "",
+    "PostCode": "",
+    "Notes": "",
+    "Floor": ""
+  }
+}

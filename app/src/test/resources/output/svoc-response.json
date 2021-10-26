@@ -1,0 +1,61 @@
+{
+  "goldenAddress": [
+    {
+      "postcode": "TW3 1PQ",
+      "addressLine1": "49, DOMINION CLOSE",
+      "addressLine2": "HOUNSLOW",
+      "addressLine3": "LONDON",
+      "addressLine4": "GREATER LONDON",
+      "addressLine5": "LONDON",
+      "addressLine6": "GBP",
+      "safePlaces": [
+        {
+          "locationType": "DF Safe Place",
+          "safePlaceType": "shed",
+          "gpsLatitude": "2.34567",
+          "gpsLongitude": "1.234567",
+          "note": "Please leave in shed",
+          "rank": 201,
+          "imageGUID": "GUID1"
+        },
+        {
+          "locationType": "DF Safe Place",
+          "safePlaceType": "garage",
+          "gpsLatitude": "2.34568",
+          "gpsLongitude": "1.234568",
+          "note": "Please leave in garage if shed locked",
+          "rank": 202,
+          "imageGUID": "GUID2"
+        }
+      ],
+      "Neighbours": [
+        {
+          "name": "Neighbour 1 Name",
+          "addressLine1": "Neighbour 1 Address Line 1",
+          "addressLine2": "Neighbour 1 Address Line 2",
+          "rank": 301
+        },
+        {
+          "name": "Neighbour 2 Name",
+          "addressLine1": "Neighbour 2 Address Line 1",
+          "addressLine2": "Neighbour 2 Address Line 2",
+          "rank": 302
+        }
+      ],
+      "avoidNeighbours": [
+        {
+          "name": "Avoid Neighbour 1 Name",
+          "addressLine1": "Avoid Neighbour 1 Address Line 1",
+          "addressLine2": "Avoid Neighbour 1 Address Line 2",
+          "rank": 401
+        },
+        {
+          "name": "Avoid Neighbour 2 Name",
+          "addressLine1": "Avoid Neighbour 2 Address Line 1",
+          "addressLine2": "Avoid Neighbour 2 Address Line 2",
+          "rank": 402
+        }
+      ]
+    }
+  ]
+}
