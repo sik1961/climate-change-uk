@@ -148,8 +148,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.datastax.cassandra</groupId>
-			<artifactId>cassandra-driver-core</artifactId>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>4.1.2</version>
 		</dependency>
     </dependencies>
 
