@@ -29,38 +29,4 @@ public class MediaServiceService {
 //        });
 //    }
 
-    @Component
-    public static class MetoDataScheduler {
-
-        @Scheduled(cron = "0 0/1 * * * *")
-        public void doStuff() throws IOException {
-            MetoDataHandler manager = new MetoDataHandler();
-            MetoDataUtilities utilities = new MetoDataUtilities();
-            MetoExcelWriter excelWriter = new MetoExcelWriter();
-
-            Set<MonthlyWeatherData> weatherData = manager.getMonthlyData();
-
-            //Set<MonthlyWeatherData> locationSpecificData = utilities.filterByStation(weatherData, "Paisley");
-
-            Map<String,Set<MonthlyWeatherData>> dataByLocation = weatherData.stream()
-                    .sorted()
-                    .collect(Collectors.groupingBy(MonthlyWeatherData::getStationName,Collectors.toSet()));
-
-            LinkedHashMap<String, Set<MonthlyWeatherData>> sortedMap = new LinkedHashMap<>();
-
-            dataByLocation.entrySet()
-                    .stream()
-                    .sorted(Map.Entry.comparingByKey(Comparator.naturalOrder()))
-                    .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-
-            excelWriter.writeHistoricWorkbook(sortedMap);
-
-            excelWriter.writeAveragesWorkbook(sortedMap);
-
-            excelWriter.writeExtremesWorkbook(utilities.buildExtremesMap(weatherData));
-
-        }
-
-
-    }
 }
