@@ -30,7 +30,8 @@ public class MetoExcelWriter {
     private static final DecimalFormat IDF = new DecimalFormat("##0");
     private static final String CR = "\n";
 
-    MetoDataUtilities utility = new MetoDataUtilities();
+    MetoDataUtilities modUtils = new MetoDataUtilities();
+    MetoDataHandler modHandler = new MetoDataHandler();
 
     private String historicFileName;
     private FileOutputStream historicOut;
@@ -83,10 +84,11 @@ public class MetoExcelWriter {
 
         HSSFWorkbook workbook = new HSSFWorkbook();
 
-        this.createAveragesWorksheet("All", workbook, utility.buildYearlyAvarageWeatherDataMap(everything));
+        this.createAveragesWorksheet("All", workbook, modHandler.buildYearlyAvarageWeatherDataMap(everything));
 
         for (String location: locationData.keySet()) {
-            this.createAveragesWorksheet(location, workbook, utility.buildYearlyAvarageWeatherDataMap(locationData.get(location)));
+            this.createAveragesWorksheet(location, workbook, modHandler
+                    .buildYearlyAvarageWeatherDataMap(locationData.get(location)));
         }
 
         workbook.write(summaryOut);

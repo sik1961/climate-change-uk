@@ -1,6 +1,8 @@
 package com.sik.climatechangeuk.service;
 
 import com.sik.climatechangeuk.model.MonthlyWeatherData;
+import com.sik.climatechangeuk.model.YearlyAverageWeatherData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -12,17 +14,23 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class MetoDataScheduler {
+@Slf4j
+public class MetoDataService {
+
+    private Set<MonthlyWeatherData> weatherData;
+    private Map<Integer, YearlyAverageWeatherData> yearlyAverageWeatherData;
 
     @Scheduled(cron = "0 0/1 * * * *")
-    public void doStuff() throws IOException {
-        MetoDataHandler manager = new MetoDataHandler();
-        MetoDataUtilities utilities = new MetoDataUtilities();
+    public void updateWeatherData() throws IOException {
+        MetoDataHandler modHandler = new MetoDataHandler();
+        MetoDataUtilities modUtils = new MetoDataUtilities();
         MetoExcelWriter excelWriter = new MetoExcelWriter();
 
-        Set<MonthlyWeatherData> weatherData = manager.getMonthlyData();
+        this.weatherData = modHandler.getMonthlyData();
+        this.yearlyAverageWeatherData = modHandler.buildYearlyAvarageWeatherDataMap(this.weatherData);
 
-        //Set<MonthlyWeatherData> locationSpecificData = utilities.filterByStation(weatherData, "Paisley");
+
+        //Set<MonthlyWeatherData> locationSpecificData = modUtils.filterByStation(weatherData, "Paisley");
 
         Map<String,Set<MonthlyWeatherData>> dataByLocation = weatherData.stream()
                 .sorted()
@@ -35,11 +43,19 @@ public class MetoDataScheduler {
                 .sorted(Map.Entry.comparingByKey(Comparator.naturalOrder()))
                 .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
 
+        for(String key :sortedMap.keySet()) {
+            for (MonthlyWeatherData x: sortedMap.get(key)) {
+                log.info(">>>>>> " + x);
+            }
+
+        }
+
+
         excelWriter.writeHistoricWorkbook(sortedMap);
 
         excelWriter.writeAveragesWorkbook(sortedMap);
 
-        excelWriter.writeExtremesWorkbook(utilities.buildExtremesMap(weatherData));
+        excelWriter.writeExtremesWorkbook(modUtils.buildExtremesMap(weatherData));
 
     }
 

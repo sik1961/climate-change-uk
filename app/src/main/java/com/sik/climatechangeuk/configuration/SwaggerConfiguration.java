@@ -13,7 +13,7 @@ public class SwaggerConfiguration {
     public Docket petApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sik.geofencing.rest"))
+                .apis(RequestHandlerSelectors.basePackage("com.sik.climatechangeuk.rest"))
                 .paths(PathSelectors.any())
                 .build();
     }

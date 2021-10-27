@@ -54,43 +54,43 @@ public class CommonConfiguration {
 
 
 
-    @Bean
-    public RestTemplate postTagRestTemplate(
-            RestTemplateBuilder restTemplateBuilder,
-            ClientHttpRequestInterceptor contentTypeInterceptor,
-            @Value("${restTemplate.connectTimeoutMillis:30000}") int connectTimeout,
-            @Value("${restTemplate.readTimeoutMillis:30000}") int readTimeout
-    ) {
-        final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
-        converter.setDefaultCharset(StandardCharsets.UTF_8);
-
-        return restTemplateBuilder
-                .additionalInterceptors(contentTypeInterceptor)
-                .messageConverters(converter)
-                .setConnectTimeout(Duration.ofMillis(connectTimeout))
-                .setReadTimeout(Duration.ofMillis(readTimeout))
-                .build();
-    }
-
-    @Bean
-    public RestTemplate postTagOverridesRestTemplate(
-            RestTemplateBuilder restTemplateBuilder,
-            ClientHttpRequestInterceptor contentTypeInterceptor,
-            @Value("${restTemplate.connectTimeoutMillis:30000}") int connectTimeout,
-            @Value("${restTemplate.readTimeoutMillis:30000}") int readTimeout
-    ) {
-        final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
-        converter.setDefaultCharset(StandardCharsets.UTF_8);
-
-        return restTemplateBuilder
-                .additionalInterceptors(contentTypeInterceptor)
-                .messageConverters(converter)
-                .setConnectTimeout(Duration.ofMillis(connectTimeout))
-                .setReadTimeout(Duration.ofMillis(readTimeout))
-                .build();
-    }
+//    @Bean
+//    public RestTemplate postTagRestTemplate(
+//            RestTemplateBuilder restTemplateBuilder,
+//            ClientHttpRequestInterceptor contentTypeInterceptor,
+//            @Value("${restTemplate.connectTimeoutMillis:30000}") int connectTimeout,
+//            @Value("${restTemplate.readTimeoutMillis:30000}") int readTimeout
+//    ) {
+//        final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+//        converter.setDefaultCharset(StandardCharsets.UTF_8);
+//
+//        return restTemplateBuilder
+//                .additionalInterceptors(contentTypeInterceptor)
+//                .messageConverters(converter)
+//                .setConnectTimeout(Duration.ofMillis(connectTimeout))
+//                .setReadTimeout(Duration.ofMillis(readTimeout))
+//                .build();
+//    }
+//
+//    @Bean
+//    public RestTemplate postTagOverridesRestTemplate(
+//            RestTemplateBuilder restTemplateBuilder,
+//            ClientHttpRequestInterceptor contentTypeInterceptor,
+//            @Value("${restTemplate.connectTimeoutMillis:30000}") int connectTimeout,
+//            @Value("${restTemplate.readTimeoutMillis:30000}") int readTimeout
+//    ) {
+//        final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+//        converter.setDefaultCharset(StandardCharsets.UTF_8);
+//
+//        return restTemplateBuilder
+//                .additionalInterceptors(contentTypeInterceptor)
+//                .messageConverters(converter)
+//                .setConnectTimeout(Duration.ofMillis(connectTimeout))
+//                .setReadTimeout(Duration.ofMillis(readTimeout))
+//                .build();
+//    }
 
 
 }

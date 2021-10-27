@@ -2,16 +2,14 @@
 package com.sik.climatechangeuk.service;
 
 import com.sik.climatechangeuk.model.MonthlyWeatherData;
+import com.sik.climatechangeuk.model.YearlyAverageWeatherData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.sik.climatechangeuk.model.MonthlyWeatherData.*;
 
@@ -21,7 +19,7 @@ public class MetoDataHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MetoDataHandler.class);
 
-	private static final String IMPORT_FILE = "src/main/resources/weather-station-data.dat";
+	private static final String IMPORT_FILE = "/weather-station-data.dat";
 	private static final String EQ = "=";
 	private static final String SPACES = " +";
 
@@ -32,7 +30,7 @@ public class MetoDataHandler {
 	public Set<MonthlyWeatherData> getMonthlyData() throws IOException {
 		Set<MonthlyWeatherData> monthlyData = new TreeSet<>();
 
-		this.urlMap = this.buildUrlMap(IMPORT_FILE);
+		this.urlMap = new MetOfficeUrlMap().getUrlMap();
 
 		for (String weatherStation : urlMap.keySet()) {
 			monthlyData.addAll(readMonthlyDataFromUrl(weatherStation));
@@ -103,21 +101,55 @@ public class MetoDataHandler {
 		return monthlyWeatherDataSet;
 	}
 
-	private Map<String, String> buildUrlMap(String filename) {
-		Map<String, String> retVal = new HashMap<>();
-		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-			for (String line; (line = br.readLine()) != null;) {
-				if (util.isValidUrlProperty(line)) {
-					retVal.put(line.split(EQ)[0], line.split(EQ)[1]);
-				}
+	public Map<Integer, YearlyAverageWeatherData> buildYearlyAvarageWeatherDataMap(final Set<MonthlyWeatherData> monthlyWeatherData) {
+		Map<Integer, YearlyAverageWeatherData> yearlyAverageDataMap = new TreeMap<>();
+		for (MonthlyWeatherData month: monthlyWeatherData) {
+			YearlyAverageWeatherData existing = yearlyAverageDataMap.get(month.getMonthStartDate().getYear());
+			if (existing == null) {
+				yearlyAverageDataMap.put(month.getMonthStartDate().getYear(), createYearAverageData(month));
+			} else {
+				yearlyAverageDataMap.put(existing.getYearStartDate().getYear(), updateYearAverageData(month, existing));
 			}
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("File not found: " + filename, e);
-		} catch (IOException e) {
-			throw new IllegalStateException("I/O Error on: " + filename, e);
 		}
+		return yearlyAverageDataMap;
+	}
 
-		return retVal;
+	public YearlyAverageWeatherData createYearAverageData(MonthlyWeatherData monthlyWeatherData) {
+		return YearlyAverageWeatherData.builder()
+				.yearStartDate(util.getYearStartDate(monthlyWeatherData.getMonthStartDate().getYear()))
+				.countTempMaxC(monthlyWeatherData.getTempMaxC()!=null?1:0)
+				.totTempMaxC(monthlyWeatherData.getTempMaxC()!=null?monthlyWeatherData.getTempMaxC():0)
+				.countTempMedC(monthlyWeatherData.getTempMedC()!=null?1:0)
+				.totTempMedC(monthlyWeatherData.getTempMedC()!=null?monthlyWeatherData.getTempMedC():0)
+				.countTempMinC(monthlyWeatherData.getTempMinC()!=null?1:0)
+				.totTempMinC(monthlyWeatherData.getTempMinC()!=null?monthlyWeatherData.getTempMinC():0)
+				.countAfDays(monthlyWeatherData.getAfDays()!=null?1:0)
+				.totAfDays(monthlyWeatherData.getAfDays()!=null?util.intToFloat(monthlyWeatherData.getAfDays()):0)
+				.countRainfallMm(monthlyWeatherData.getRainfallMm()!=null?1:0)
+				.totRainfallMm(monthlyWeatherData.getRainfallMm()!=null?monthlyWeatherData.getRainfallMm():0)
+				.countSunHours(monthlyWeatherData.getSunHours()!=null?1:0)
+				.totSunHours(monthlyWeatherData.getSunHours()!=null?monthlyWeatherData.getSunHours():0)
+				.build();
+
+	}
+
+	public YearlyAverageWeatherData updateYearAverageData(MonthlyWeatherData monthlyWeatherData,
+														  YearlyAverageWeatherData existing) {
+		return YearlyAverageWeatherData.builder()
+				.yearStartDate(existing.getYearStartDate())
+				.countTempMaxC(existing.getCountTempMaxC() + (monthlyWeatherData.getTempMaxC()!=null?1:0))
+				.totTempMaxC(existing.getTotTempMaxC() + (monthlyWeatherData.getTempMaxC()!=null?monthlyWeatherData.getTempMaxC():0))
+				.countTempMedC(existing.getCountTempMedC() + (monthlyWeatherData.getTempMedC()!=null?1:0))
+				.totTempMedC(existing.getTotTempMedC() + (monthlyWeatherData.getTempMedC()!=null?monthlyWeatherData.getTempMedC():0))
+				.countTempMinC(existing.getCountTempMinC() + (monthlyWeatherData.getTempMinC()!=null?1:0))
+				.totTempMinC(existing.getTotTempMinC() + (monthlyWeatherData.getTempMinC()!=null?monthlyWeatherData.getTempMinC():0))
+				.countAfDays(existing.getCountAfDays() + (monthlyWeatherData.getAfDays()!=null?1:0))
+				.totAfDays(existing.getTotAfDays() + (monthlyWeatherData.getAfDays()!=null?util.intToFloat(monthlyWeatherData.getAfDays()):0))
+				.countRainfallMm(existing.getCountRainfallMm() + (monthlyWeatherData.getRainfallMm()!=null?1:0))
+				.totRainfallMm(existing.getTotRainfallMm() + (monthlyWeatherData.getRainfallMm()!=null?monthlyWeatherData.getRainfallMm():0))
+				.countSunHours(existing.getCountSunHours() + (monthlyWeatherData.getSunHours()!=null?1:0))
+				.totSunHours(existing.getTotSunHours() + (monthlyWeatherData.getSunHours()!=null?monthlyWeatherData.getSunHours():0))
+				.build();
 	}
 
 }

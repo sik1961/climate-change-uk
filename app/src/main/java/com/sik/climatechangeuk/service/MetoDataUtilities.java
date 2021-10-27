@@ -50,56 +50,7 @@ public class MetoDataUtilities {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public Map<Integer, YearlyAverageWeatherData> buildYearlyAvarageWeatherDataMap(final Set<MonthlyWeatherData> monthlyWeatherData) {
-        Map<Integer, YearlyAverageWeatherData> yearlyAverageDataMap = new TreeMap<>();
-        for (MonthlyWeatherData month: monthlyWeatherData) {
-            YearlyAverageWeatherData existing = yearlyAverageDataMap.get(month.getMonthStartDate().getYear());
-            if (existing == null) {
-                yearlyAverageDataMap.put(month.getMonthStartDate().getYear(), createYearAverageData(month));
-            } else {
-                yearlyAverageDataMap.put(existing.getYearStartDate().getYear(), updateYearAverageData(month, existing));
-            }
-        }
-        return yearlyAverageDataMap;
-    }
 
-    public YearlyAverageWeatherData createYearAverageData(MonthlyWeatherData monthlyWeatherData) {
-        return YearlyAverageWeatherData.builder()
-                .yearStartDate(getYearStartDate(monthlyWeatherData.getMonthStartDate().getYear()))
-                .countTempMaxC(monthlyWeatherData.getTempMaxC()!=null?1:0)
-                .totTempMaxC(monthlyWeatherData.getTempMaxC()!=null?monthlyWeatherData.getTempMaxC():0)
-                .countTempMedC(monthlyWeatherData.getTempMedC()!=null?1:0)
-                .totTempMedC(monthlyWeatherData.getTempMedC()!=null?monthlyWeatherData.getTempMedC():0)
-                .countTempMinC(monthlyWeatherData.getTempMinC()!=null?1:0)
-                .totTempMinC(monthlyWeatherData.getTempMinC()!=null?monthlyWeatherData.getTempMinC():0)
-                .countAfDays(monthlyWeatherData.getAfDays()!=null?1:0)
-                .totAfDays(monthlyWeatherData.getAfDays()!=null?intToFloat(monthlyWeatherData.getAfDays()):0)
-                .countRainfallMm(monthlyWeatherData.getRainfallMm()!=null?1:0)
-                .totRainfallMm(monthlyWeatherData.getRainfallMm()!=null?monthlyWeatherData.getRainfallMm():0)
-                .countSunHours(monthlyWeatherData.getSunHours()!=null?1:0)
-                .totSunHours(monthlyWeatherData.getSunHours()!=null?monthlyWeatherData.getSunHours():0)
-                .build();
-
-    }
-
-    public YearlyAverageWeatherData updateYearAverageData(MonthlyWeatherData monthlyWeatherData,
-                                                           YearlyAverageWeatherData existing) {
-        return YearlyAverageWeatherData.builder()
-                .yearStartDate(existing.getYearStartDate())
-                .countTempMaxC(existing.getCountTempMaxC() + (monthlyWeatherData.getTempMaxC()!=null?1:0))
-                .totTempMaxC(existing.getTotTempMaxC() + (monthlyWeatherData.getTempMaxC()!=null?monthlyWeatherData.getTempMaxC():0))
-                .countTempMedC(existing.getCountTempMedC() + (monthlyWeatherData.getTempMedC()!=null?1:0))
-                .totTempMedC(existing.getTotTempMedC() + (monthlyWeatherData.getTempMedC()!=null?monthlyWeatherData.getTempMedC():0))
-                .countTempMinC(existing.getCountTempMinC() + (monthlyWeatherData.getTempMinC()!=null?1:0))
-                .totTempMinC(existing.getTotTempMinC() + (monthlyWeatherData.getTempMinC()!=null?monthlyWeatherData.getTempMinC():0))
-                .countAfDays(existing.getCountAfDays() + (monthlyWeatherData.getAfDays()!=null?1:0))
-                .totAfDays(existing.getTotAfDays() + (monthlyWeatherData.getAfDays()!=null?intToFloat(monthlyWeatherData.getAfDays()):0))
-                .countRainfallMm(existing.getCountRainfallMm() + (monthlyWeatherData.getRainfallMm()!=null?1:0))
-                .totRainfallMm(existing.getTotRainfallMm() + (monthlyWeatherData.getRainfallMm()!=null?monthlyWeatherData.getRainfallMm():0))
-                .countSunHours(existing.getCountSunHours() + (monthlyWeatherData.getSunHours()!=null?1:0))
-                .totSunHours(existing.getTotSunHours() + (monthlyWeatherData.getSunHours()!=null?monthlyWeatherData.getSunHours():0))
-                .build();
-    }
 
     public Map<String, WeatherExtremesData> buildExtremesMap(Set<MonthlyWeatherData> weatherData) {
         Map<String, WeatherExtremesData> extremes = new TreeMap<>();

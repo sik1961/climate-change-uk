@@ -71,16 +71,6 @@
                 <version>${spring-boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-cassandra</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.cognitor.cassandra</groupId>
-                <artifactId>cassandra-migration-spring-boot-starter</artifactId>
-                <version>2.2.0</version>
-            </dependency>
-            <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
                 <version>${springfox.swagger.version}</version>
@@ -113,11 +103,6 @@
                 <artifactId>docker-java</artifactId>
                 <version>${docker-java.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.datastax.cassandra</groupId>
-                <artifactId>cassandra-driver-core</artifactId>
-                <version>3.3.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -191,10 +176,10 @@
                             <outputDirectory>target</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>version</directory>
+                                    <directory>src/main/resources</directory>
                                     <filtering>true</filtering>
                                     <includes>
-                                        <include>/version.txt</include>
+                                        <include>/weather-station-data.dat</include>
                                     </includes>
                                 </resource>
                             </resources>
