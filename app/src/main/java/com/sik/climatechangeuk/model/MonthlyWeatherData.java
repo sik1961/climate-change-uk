@@ -25,7 +25,6 @@ public class MonthlyWeatherData  implements Comparable<MonthlyWeatherData> {
 	public static final String LAT = "Lat";
 	public static final String LON = "Lon";
 
-	private String id;
 	private String stationName;
 	private String stationLocation;
 	private LocalDate monthStartDate;
