@@ -41,11 +41,11 @@ public class MetoExcelWriter {
     private FileOutputStream extremesOut;
 
     public MetoExcelWriter() throws IOException {
-        this.historicFileName = "/Users/sik/met-office/MetOfficeHistoricData.xlsx";
+        this.historicFileName = "MetOfficeHistoricData.xlsx";
         this.historicOut = new FileOutputStream(this.historicFileName);
-        this.summaryFileName = "/Users/sik/met-office/MetOfficeYearlyAverages.xlsx";
+        this.summaryFileName = "MetOfficeYearlyAverages.xlsx";
         this.summaryOut = new FileOutputStream(this.summaryFileName);
-        this.extremesFileName = "/Users/sik/met-office/MetOfficeExtremes.xlsx";
+        this.extremesFileName = "MetOfficeExtremes.xlsx";
         this.extremesOut = new FileOutputStream(this.extremesFileName);
     }
 

@@ -1,4 +1,4 @@
-FROM anapsix/alpine-java:11
+FROM openjdk:11
 
 COPY climate-change-uk-app/climate-change-uk-app.jar /
 

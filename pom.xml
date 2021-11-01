@@ -152,19 +152,6 @@
 
         <plugins>
             <plugin>
-                <groupId>external.atlassian.jgitflow</groupId>
-                <artifactId>jgitflow-maven-plugin</artifactId>
-                <configuration>
-                    <noDeploy>true</noDeploy>
-                    <pushReleases>true</pushReleases>
-                    <pullMaster>true</pullMaster>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <enableFeatureVersions>true</enableFeatureVersions>
-                    <scmCommentPrefix>[release-plugin]</scmCommentPrefix>
-                    <enableSshAgent>true</enableSshAgent>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>

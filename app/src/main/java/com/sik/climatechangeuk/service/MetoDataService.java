@@ -43,12 +43,12 @@ public class MetoDataService {
                 .sorted(Map.Entry.comparingByKey(Comparator.naturalOrder()))
                 .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
 
-        for(String key :sortedMap.keySet()) {
-            for (MonthlyWeatherData x: sortedMap.get(key)) {
-                log.info(">>>>>> " + x);
-            }
-
-        }
+//        for(String key :sortedMap.keySet()) {
+//            for (MonthlyWeatherData x: sortedMap.get(key)) {
+//                log.info(">>>>>> " + x);
+//            }
+//
+//        }
 
 
         excelWriter.writeHistoricWorkbook(sortedMap);
