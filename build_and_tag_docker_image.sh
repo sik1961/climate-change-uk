@@ -17,6 +17,6 @@ cp docker/Dockerfile $TARGET
 
 cd $TARGET
 
-docker build -t dgw-pulse-replacement/climate-change-uk . &&
-docker tag dgw-pulse-replacement/climate-change-uk:latest 548760365095.dkr.ecr.eu-west-1.amazonaws.com/dgw-pulse-replacement/climate-change-uk:latest
+docker build -t sik1961/climate-change-uk . &&
+docker tag sik1961/climate-change-uk:latest sik1961/climate-change-uk:latest
 
