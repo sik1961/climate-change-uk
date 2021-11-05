@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM tomee:latest
 
 COPY climate-change-uk-app/climate-change-uk-app.jar /
 

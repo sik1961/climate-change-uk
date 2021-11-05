@@ -6,9 +6,8 @@ TARGET_DP=${TARGET}climate-change-uk-app/
 
 cd "$DIR"
 
-mvn -DskipTests=true clean package &&
+./mvnw -DskipTests=true clean package &&
 
-mkdir -p ${TARGET} &&
 mkdir -p ${TARGET_DP} &&
 
 cp version/version.txt $TARGET &&
@@ -16,9 +15,8 @@ cp app/target/climate-change-uk-app-*-exec.jar ${TARGET_DP}climate-change-uk-app
 
 cp docker/Dockerfile $TARGET
 
-
 cd $TARGET
 
-sudo docker build -t skusners/climate-change-uk . &&
-sudo docker tag skusners/climate-change-uk:latest skusners/climate-change-uk:latest
+docker build -t sik1961/climate-change-uk . &&
+docker tag sik1961/climate-change-uk:latest sik1961/climate-change-uk:latest
 
